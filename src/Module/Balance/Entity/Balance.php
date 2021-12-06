@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Module\Balance\Entity;
 
+use App\Helper\CommandInterface;
 use App\Helper\IdTrait;
 use App\Module\Balance\Repository\BalanceRepository;
+use App\Module\Transaction\UseCase\Search\Command;
 use App\Module\User\Entity\User;
 use App\Module\Transaction\Entity\Transaction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -119,5 +122,20 @@ class Balance
         }
 
         return $this;
+    }
+
+    public function getTransactionWithParams(CommandInterface $command)
+    {
+        /** @var Command  $command */
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->gte('createdAt', $command->startDate))
+            ->andWhere(Criteria::expr()->lte('createdAt', $command->endDate))
+        ;
+
+        if ($command->service) {
+            $criteria->andWhere(Criteria::expr()->eq('service', $command->service));
+        }
+
+        return $this->transactions->matching($criteria);
     }
 }

@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Транзакции{% endblock %}
+
+{% block body %}
+    <h2 style="margin: 40px 0 40px 0; text-align: center;">Транзакции пользователя John Doe</h2>
+    <ul class="nav nav-tabs" style="margin: 50px 0 50px 0;">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('profile') }}">Профиль</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('subscription_list', { user: user.id }) }}">Подписки</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('transaction_list', { user: user.id }) }}">Транзакции</a>
+        </li>
+    </ul>
+
+    <div class="col-md-6 offset-md-3">
+        {{ form_start(form) }}
+
+        {{ form_end(form) }}
+    </div>
+
+    {% if transactions|length > 0 %}
+        <table class="table table-striped" style="margin: 50px 0 100px 0;">
+            <thead>
+            <tr>
+                <th scope="col">Услуга</th>
+                <th scope="col">Дата</th>
+                <th scope="col">Действие</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Баланс до транзакции</th>
+                <th scope="col">Баланс после транзакции</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <th scope="row">
+                        {% if transaction.service %}
+                            {{ transaction.service.name }}
+                        {% else %}
+                            Пополнение счета
+                        {% endif %}
+                    </th>
+                    <td>{{ transaction.createdAt|date("Y/m/d") }}</td>
+                    <td>{{ transaction.actionLabel }}</td>
+                    <td>{{ transaction.sum }}</td>
+                    <td>{{ transaction.balanceBefore }}</td>
+                    <td>{{ transaction.balanceAfter }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3 style="margin: 40px 0 40px 0; text-align: center;">Список ранзакций пуст!</h3>
+    {% endif %}
+
+{% endblock %}

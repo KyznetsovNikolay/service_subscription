@@ -12,7 +12,7 @@
             <a class="nav-link" href="{{ path('subscription_list', { user: user.id }) }}">Подписки</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Транзакции</a>
+            <a class="nav-link" href="{{ path('transaction_list', { user: user.id }) }}">Транзакции</a>
         </li>
     </ul>
 
