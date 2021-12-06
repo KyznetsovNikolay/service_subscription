@@ -49,6 +49,17 @@ class Handler
             );
         }
 
+        foreach ($command->user->getSubscriptions() as $subscription) {
+            if ($command->service->getId() === $subscription->getService()->getId()) {
+                throw new \DomainException(
+                    sprintf(
+                        'Вы уже подписаны на услугу %s.',
+                        $subscription->getService()->getName()
+                    )
+                );
+            }
+        }
+
         $subscription = (new Subscription())
             ->setUser($command->user)
             ->setCount((int) $command->count)
