@@ -43,3 +43,9 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Module/Service/Entity'
                 prefix: 'App\Module\Service\Entity'
                 alias: Service
+            Subscription:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Module/Subscription/Entity'
+                prefix: 'App\Module\Subscription\Entity'
+                alias: Subscription
