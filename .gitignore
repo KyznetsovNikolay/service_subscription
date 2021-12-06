@@ -1,3 +1,4 @@
+/.idea
 /docker/mysql/.mysql
 ###> symfony/framework-bundle ###
 /.env.local
