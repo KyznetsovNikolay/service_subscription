@@ -37,3 +37,9 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Module/Transaction/Entity'
                 prefix: 'App\Module\Transaction\Entity'
                 alias: Transaction
+            Service:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Module/Service/Entity'
+                prefix: 'App\Module\Service\Entity'
+                alias: Service
