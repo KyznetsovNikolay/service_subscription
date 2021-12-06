@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Подписки{% endblock %}
+
+{% block body %}
+    <h2 style="margin: 40px 0 40px 0; text-align: center;">Подписки пользователя John Doe</h2>
+
+    <ul class="nav nav-tabs" style="margin: 50px 0 50px 0;">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('profile') }}">Профиль</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Подписки</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Транзакции</a>
+        </li>
+    </ul>
+
+    <a href="#" class="btn btn-primary" style="margin-bottom: 30px;">Добавить</a>
+
+    {% for message in app.flashes('error') %}
+        <div class="flash-notice alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% if user.subscriptions|length > 0 %}
+        <table class="table table-striped" style="margin-bottom: 100px;">
+            <thead>
+                <tr>
+                    <th scope="col">Услуга</th>
+                    <th scope="col">Колличество</th>
+                    <th scope="col">Цена за ед.</th>
+                    <th scope="col">Общая цена</th>
+                    <th scope="col">Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subscription in user.subscriptions %}
+                    <tr>
+                        <th scope="row">{{ subscription.service.name }}</th>
+                        <td>{{ subscription.count }}</td>
+                        <td>{{ subscription.service.price }}</td>
+                        <td>{{ subscription.totalPrice }}</td>
+                        <td>
+                            <a
+                               href="javascript:void(0)"
+                               onclick="
+                                       if(confirm('Вы уверены что хотите удалить подписку?')) {
+                                           window.location='#'
+                                       }"
+                               class="btn btn-danger"
+                            >
+                                Удалить
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3 style="margin: 40px 0 40px 0; text-align: center;">Список подписок пуст!</h3>
+    {% endif %}
+{% endblock %}

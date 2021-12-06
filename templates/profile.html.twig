@@ -9,7 +9,7 @@
             <a class="nav-link active" href="{{ path('profile') }}">Профиль</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Подписки</a>
+            <a class="nav-link" href="{{ path('subscription_list', { user: user.id }) }}">Подписки</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Транзакции</a>
