@@ -10,6 +10,8 @@ use App\Module\Subscription\UseCase\Add\Form as AddForm;
 use App\Module\Subscription\UseCase\Add\Handler as AddHandler;
 use App\Module\Subscription\UseCase\Delete\Command as DeleteCommand;
 use App\Module\Subscription\UseCase\Delete\Handler as DeleteHandler;
+use App\Module\Subscription\UseCase\PayAll\Command;
+use App\Module\Subscription\UseCase\PayAll\Handler as PayAllHandler;
 use App\Module\User\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +23,26 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SubscriptionController extends AbstractController
 {
+
+    /**
+     * @Route("/{user}/pay", name="pay_all")
+     * @param User $user
+     * @param PayAllHandler $handler
+     * @return Response
+     */
+    public function payAll(User $user, PayAllHandler $handler): Response
+    {
+        $command = new Command();
+        $command->user = $user;
+        try {
+            $handler->handle($command);
+        } catch (\DomainException $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
+
+        header('Location: /');
+        return new Response();
+    }
 
     /**
      * @Route("/{user}/add", name="add")
