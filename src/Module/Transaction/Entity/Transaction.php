@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Module\Transaction\Entity;
 
 use App\Helper\IdTrait;
+use App\Module\Service\Entity\Service;
+use App\Module\Balance\Entity\Balance;
 use App\Module\Transaction\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -41,6 +43,17 @@ class Transaction
      * @ORM\Column(type="float", nullable=false)
      */
     private $balanceAfter;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Balance::class, inversedBy="transactions")
+     */
+    private $balance;
+
+    /**
+     * @var Service|null
+     * @ORM\ManyToOne(targetEntity=Service::class)
+     */
+    private $service;
 
     /**
      * @return mixed
@@ -118,6 +131,47 @@ class Transaction
         return $this;
     }
 
+    /**
+     * @return Balance|null
+     */
+    public function getBalance(): ?Balance
+    {
+        return $this->balance;
+    }
+
+    /**
+     * @param Balance|null $balance
+     * @return $this
+     */
+    public function setBalance(?Balance $balance): self
+    {
+        $this->balance = $balance;
+
+        return $this;
+    }
+
+    /**
+     * @return Service|null
+     */
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    /**
+     * @param Service $service
+     * @return $this
+     */
+    public function setService(Service $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getActionLabel(): string
     {
         $labels = [

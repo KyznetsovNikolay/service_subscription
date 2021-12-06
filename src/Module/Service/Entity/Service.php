@@ -6,6 +6,9 @@ namespace App\Module\Service\Entity;
 
 use App\Helper\IdTrait;
 use App\Module\Service\Repository\ServiceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Module\Subscription\Entity\Subscription;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -28,11 +31,28 @@ class Service
      */
     private $price;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Subscription::class, mappedBy="service", orphanRemoval=true)
+     */
+    private $subscriptions;
+
+    public function __construct()
+    {
+        $this->subscriptions = new ArrayCollection();
+    }
+
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -40,15 +60,30 @@ class Service
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getPrice(): ?float
     {
         return $this->price;
     }
 
+    /**
+     * @param float $price
+     * @return $this
+     */
     public function setPrice(float $price): self
     {
         $this->price = $price;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Subscription[]
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
     }
 }
