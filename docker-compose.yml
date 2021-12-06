@@ -1,0 +1,41 @@
+version: '3.4'
+services:
+
+  # Nginx
+  web:
+    container_name: subscription.web
+    build: docker/nginx
+    ports:
+      - ${BACKEND_NGINX_PORT:-8020}:80
+    depends_on:
+      - app
+    restart: always
+    volumes:
+      - ./:/www/app
+
+  # PHP-fpm
+  app:
+    container_name: subscription.app
+    build: docker/php-fpm
+    depends_on:
+      - mysql
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ./:/www/app
+    working_dir: /www/app
+
+  # MySQL
+  mysql:
+    container_name: subscription.mysql
+    image: mysql:8.0.17
+    ports:
+      - "${MYSQL_PORT:-33063}:3306"
+    volumes:
+      - ./docker/mysql/.mysql:/var/lib/mysql
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+    environment:
+      MYSQL_ROOT_PASSWORD: "docker"
+      MYSQL_DATABASE: "service_subscription"
+      MYSQL_USER: "docker"
+      MYSQL_PASSWORD: "docker"
+      TZ: "UTC"
