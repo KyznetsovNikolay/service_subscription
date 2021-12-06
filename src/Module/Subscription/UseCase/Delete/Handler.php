@@ -34,11 +34,11 @@ class Handler
     {
         $subscription = $command->subscription;
         $balance = $command->user->getBalance();
-        $balanceBefore = (float) $balance->getTotal();
+        $balanceBefore = $balance->getTotal();
 
         $subscription->setDeletedAt(new \DateTime());
         $sum = $this->balanceService->calculatePrice($subscription->getService(), $subscription->getCount());
-        $balanceAfter = (float) $balance->getTotal() + $sum;
+        $balanceAfter = $balance->getTotal() + $sum;
         $balance->setTotal($balanceAfter);
 
         $transaction = (new Transaction())
