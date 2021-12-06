@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block body %}
+    <h2 style="margin: 40px 0 40px 0; text-align: center;">Профиль пользователя {{ user.getFullName }}</h2>
+    <ul class="nav nav-tabs" style="margin: 50px 0 50px 0;">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('profile') }}">Профиль</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Подписки</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Транзакции</a>
+        </li>
+    </ul>
+
+    <h3 style="margin: 40px 0 40px 0; text-align: center;">Ваш баланс составляет: {{ user.balance.total }}</h3>
+
+    {% for message in app.flashes('error') %}
+        <div class="flash-notice alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div style="text-align: center;">
+        <a href="#" class="btn btn-success">Пополнить баланс</a>
+        <a href="#" class="btn btn-info">Оплатить все услуги</a>
+    </div>
+{% endblock %}
+
+
