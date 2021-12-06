@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Module\Subscription\UseCase\Add\Command as AddCommand;
+use App\Module\Subscription\UseCase\Add\Form as AddForm;
+use App\Module\Subscription\UseCase\Add\Handler as AddHandler;
 use App\Module\User\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,6 +18,36 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SubscriptionController extends AbstractController
 {
+
+    /**
+     * @Route("/{user}/add", name="add")
+     * @param Request $request
+     * @param User $user
+     * @param AddHandler $handler
+     * @return Response
+     */
+    public function addSubscription(Request $request, User $user, AddHandler $handler): Response
+    {
+        $command = new AddCommand();
+        $command->user = $user;
+
+        $form = $this->createForm(AddForm::class, $command);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $handler->handle($command);
+            } catch (\DomainException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
+            // $this->redirect() и $this->redirectToRoute() не работают
+            header(sprintf('Location: /subscription/%s', $user->getId()));
+        }
+
+        return $this->render('subscription/add.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 
     /**
      * @Route("/{user}", name="list")

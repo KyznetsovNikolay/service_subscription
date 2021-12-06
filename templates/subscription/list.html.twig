@@ -17,7 +17,7 @@
         </li>
     </ul>
 
-    <a href="#" class="btn btn-primary" style="margin-bottom: 30px;">Добавить</a>
+    <a href="{{ path('subscription_add', { user: user.id }) }}" class="btn btn-primary" style="margin-bottom: 30px;">Добавить</a>
 
     {% for message in app.flashes('error') %}
         <div class="flash-notice alert alert-danger">
