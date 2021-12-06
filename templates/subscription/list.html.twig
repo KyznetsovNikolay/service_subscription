@@ -48,7 +48,7 @@
                                href="javascript:void(0)"
                                onclick="
                                        if(confirm('Вы уверены что хотите удалить подписку?')) {
-                                           window.location='#'
+                                           window.location='{{ path('subscription_delete', { user: user.id, subscription: subscription.id }) }}'
                                        }"
                                class="btn btn-danger"
                             >
