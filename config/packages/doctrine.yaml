@@ -25,3 +25,9 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Module/User/Entity'
                 prefix: 'App\Module\User\Entity'
                 alias: User
+            Balance:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Module/Balance/Entity'
+                prefix: 'App\Module\Balance\Entity'
+                alias: Balance
