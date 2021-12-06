@@ -2,8 +2,10 @@ up: build migrate fixtures
 down: stop
 restart: down build
 
-build:
+start:
 	docker-compose up -d
+
+build: start
 	docker-compose run --rm app composer install
 
 migrate:
